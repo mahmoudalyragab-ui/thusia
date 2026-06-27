@@ -1,18 +1,19 @@
 extends StaticBody3D
 
-var is_open = false # متغير بيحفظ حالة الباب (مفتوح ولا مقفول)
+# حالة الباب
+var is_open = false
 
 func interact():
-	# إنشاء Tween عشان يعمل حركة ناعمة ومريحة للعين
+	# إنشاء تحريك ناعم
 	var tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	
 	if not is_open:
-		# لو الباب مقفول.. يلف حول محور Y بزاوية 90 درجة في خلال ثانية واحدة
+		# فتح الباب
 		tween.tween_property(self, "rotation_degrees:y", 90.0, 1.0)
 		is_open = true
-		print("الباب اتفتح!")
+		print("تم فتح الباب!")
 	else:
-		# لو الباب مفتوح.. يرجع للزاوية 0 ويقفل في خلال ثانية واحدة
+		# إغلاق الباب
 		tween.tween_property(self, "rotation_degrees:y", 0.0, 1.0)
 		is_open = false
-		print("الباب اتقفل!")
+		print("تم إغلاق الباب!")
