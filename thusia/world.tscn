@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cxs6c78elop7t" path="res://player.gd" id="1_f3sb7"]
 [ext_resource type="Script" uid="uid://cy4w3syyky0rb" path="res://interactable_object.gd" id="2_fj7yv"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fj7yv"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
 radius = 0.4
 height = 1.8
 
@@ -19,71 +19,78 @@ albedo_color = Color(0.7, 0.7, 0.7, 1.0)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.6, 0.6, 0.6, 1.0)
 
-[node name="world" type="Node3D" unique_id=493771620]
+[node name="world" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 10, 10, 10)
 energy_multiplier = 1.5
 
+# الأرضية
 [node name="floor" type="CSGBox3D" parent="."]
 material = SubResource("StandardMaterial3D_floor")
 use_collision = true
-size = Vector3(15, 0.5, 14)
+size = Vector3(16, 0.5, 14)
 
+# السقف
 [node name="ceiling" type="CSGBox3D" parent="."]
 material = SubResource("StandardMaterial3D_walls")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
 use_collision = true
-size = Vector3(15, 0.2, 14)
+size = Vector3(16, 0.2, 14)
 
+# الحيطان الخارجية
+
+# جدار شمالي (الصالة)
 [node name="wall_north" type="CSGBox3D" parent="."]
 material = SubResource("StandardMaterial3D_walls")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, -7)
 use_collision = true
-size = Vector3(15, 3.5, 0.2)
+size = Vector3(16, 3.5, 0.2)
 
+# جدار جنوبي (أسفل الغرفتين)
 [node name="wall_south" type="CSGBox3D" parent="."]
 material = SubResource("StandardMaterial3D_walls")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 7)
 use_collision = true
-size = Vector3(15, 3.5, 0.2)
+size = Vector3(16, 3.5, 0.2)
 
+# جدار غربي (يسار)
 [node name="wall_west" type="CSGBox3D" parent="."]
 material = SubResource("StandardMaterial3D_walls")
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 1.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.75, 0)
 use_collision = true
 size = Vector3(0.2, 3.5, 14)
 
+# جدار شرقي (يمين)
 [node name="wall_east" type="CSGBox3D" parent="."]
 material = SubResource("StandardMaterial3D_walls")
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 1.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1.75, 0)
 use_collision = true
 size = Vector3(0.2, 3.5, 14)
 
-[node name="wall_middle_vertical" type="CSGBox3D" parent="."]
+# الجدران الفاصلة
+
+# جدار أفقي يفصل الصالة عن الغرف (في الوسط)
+[node name="wall_horizontal_separator" type="CSGBox3D" parent="."]
 material = SubResource("StandardMaterial3D_walls")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
 use_collision = true
+size = Vector3(16, 3.5, 0.2)
+
+# جدار عمودي يفصل بين غرفة الابن وغرفة الأب (في الوسط)
+[node name="wall_vertical_separator" type="CSGBox3D" parent="."]
+material = SubResource("StandardMaterial3D_walls")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 3.5)
+use_collision = true
 size = Vector3(0.2, 3.5, 7)
 
-[node name="wall_middle_horizontal_left" type="CSGBox3D" parent="."]
-material = SubResource("StandardMaterial3D_walls")
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 1.75, -3.5)
-use_collision = true
-size = Vector3(7, 3.5, 0.2)
-
-[node name="wall_middle_horizontal_right" type="CSGBox3D" parent="."]
-material = SubResource("StandardMaterial3D_walls")
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 1.75, -3.5)
-use_collision = true
-size = Vector3(7, 3.5, 0.2)
-
+# اللاعب - ينبدأ في غرفة الابن
 [node name="player" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 1.5, -3.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.5, 3.5)
 script = ExtResource("1_f3sb7")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="player"]
-shape = SubResource("CapsuleShape3D_fj7yv")
+shape = SubResource("CapsuleShape3D_player")
 
 [node name="head" type="Node3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
@@ -109,35 +116,38 @@ layout_mode = 2
 color = Color(1, 0, 0, 0.5)
 mouse_filter = 2
 
-[node name="door_son" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1.1, -6.95)
+# الباب 1: من غرفة الابن للصالة
+[node name="door_son_to_hall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.1, -0.1)
 script = ExtResource("2_fj7yv")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="door_son"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="door_son_to_hall"]
 mesh = SubResource("BoxMesh_door")
 material = SubResource("StandardMaterial3D_walls")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="door_son"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="door_son_to_hall"]
 shape = SubResource("BoxShape3D_door")
 
-[node name="door_father" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1.1, -6.95)
+# الباب 2: من غرفة الأب للصالة
+[node name="door_father_to_hall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.1, -0.1)
 script = ExtResource("2_fj7yv")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="door_father"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="door_father_to_hall"]
 mesh = SubResource("BoxMesh_door")
 material = SubResource("StandardMaterial3D_walls")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="door_father"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="door_father_to_hall"]
 shape = SubResource("BoxShape3D_door")
 
-[node name="door_main" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 6.95)
+# الباب 3: الباب الرئيسي من الصالة للخارج
+[node name="door_main_exit" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, -6.9)
 script = ExtResource("2_fj7yv")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="door_main"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="door_main_exit"]
 mesh = SubResource("BoxMesh_door")
 material = SubResource("StandardMaterial3D_walls")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="door_main"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="door_main_exit"]
 shape = SubResource("BoxShape3D_door")
